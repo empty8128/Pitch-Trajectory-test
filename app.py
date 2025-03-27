@@ -117,8 +117,6 @@ else:
         h_t_n0 = pf0.columns.get_loc('home_team')
         plate_x_n0 = pf0.columns.get_loc('plate_x')
         plate_z_n0 = pf0.columns.get_loc('plate_z')
-        print(plate_x_n0)
-        print(plate_z_n0)
         a_t_n0 = pf0.columns.get_loc('away_team')
         zone_n0 = pf0.columns.get_loc('zone') 
         r_s_r_n0 = pf0.columns.get_loc('release_spin_rate')
@@ -482,7 +480,6 @@ else:
         x_ball0.append(x_cen+0.111549*cos(t))
         y_ball0.append(17/12)
         z_ball0.append(z_cen+0.111549*sin(t))
-    print(x_ball0)
     fig_0.add_trace(go.Scatter3d(
         x=x_ball0,
         y=y_ball0,
