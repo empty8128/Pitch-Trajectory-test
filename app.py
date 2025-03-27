@@ -37,9 +37,17 @@ ok = 0
 
 st.set_page_config(layout="wide")
 
-st.title("Pitch Trajector")
-st.markdown("Who made this? [empty8128<𝕏(Twitter)>](https://x.com/empty8128)")
+#st.markdown('<div class="con"><h1>Pitch Trajector</h1><p class="twitter">Who made this? <a href= "https://x.com/empty8128">empty8128(𝕏(Twitter))</a></p></div>',unsafe_allow_html=True)
 #st.sidebar.markdown("Please select in the order of year-playername-pitch")
+
+st.markdown("""
+    <style>
+        .con{
+            display: flex;
+            align-items: center;
+            }
+    </style>
+""", unsafe_allow_html=True)
 
 #回転
 
@@ -107,6 +115,10 @@ else:
         de_n0 = pf0.columns.get_loc('description')
         r_s_n0 = pf0.columns.get_loc('release_speed')
         h_t_n0 = pf0.columns.get_loc('home_team')
+        plate_x_n0 = pf0.columns.get_loc('plate_x')
+        plate_z_n0 = pf0.columns.get_loc('plate_z')
+        print(plate_x_n0)
+        print(plate_z_n0)
         a_t_n0 = pf0.columns.get_loc('away_team')
         zone_n0 = pf0.columns.get_loc('zone') 
         r_s_r_n0 = pf0.columns.get_loc('release_spin_rate')
@@ -162,9 +174,9 @@ else:
     def v_z0_s(a,b,c):
         return a.iat[b-c,vz0_n0]+a.iat[b-c,az_n0]*t_s(a,b,c)
     def r_x_c0(a,b,c):
-        return a.iat[b-c,29]-(a.iat[b-c,vx0_n0]*t_50_1712(a,b,c)+(1/2)*a.iat[b-c,ax_n0]*t_50_1712(a,b,c)**2)
+        return a.iat[b-c,plate_x_n0]-(a.iat[b-c,vx0_n0]*t_50_1712(a,b,c)+(1/2)*a.iat[b-c,ax_n0]*t_50_1712(a,b,c)**2)
     def r_z_c0(a,b,c):
-        return a.iat[b-c,30]-(a.iat[b-c,vz0_n0]*t_50_1712(a,b,c)+(1/2)*a.iat[b-c,az_n0]*t_50_1712(a,b,c)**2)
+        return a.iat[b-c,plate_z_n0]-(a.iat[b-c,vz0_n0]*t_50_1712(a,b,c)+(1/2)*a.iat[b-c,az_n0]*t_50_1712(a,b,c)**2)
     def r_x0_s0(a,b,c):
         return r_x_c0(a,b,c)+a.iat[b-c,vx0_n0]*t_s(a,b,c)+(1/2)*a.iat[b-c,ax_n0]*t_s(a,b,c)**2
     def r_y0_s0(a,b,c):
@@ -460,6 +472,29 @@ else:
             opacity=0.3)
         )
 
+    x_ball0 = []
+    y_ball0 = []
+    z_ball0 = []
+
+    x_cen = pf0.iat[len0-n0,plate_x_n0]
+    z_cen = pf0.iat[len0-n0,plate_z_n0]
+    for t in frange(0, 2*pi + pi/20, pi/20):
+        x_ball0.append(x_cen+0.111549*cos(t))
+        y_ball0.append(17/12)
+        z_ball0.append(z_cen+0.111549*sin(t))
+    print(x_ball0)
+    fig_0.add_trace(go.Scatter3d(
+        x=x_ball0,
+        y=y_ball0,
+        z=z_ball0,
+        mode='lines',
+        line=dict(
+            color='#243250',
+            width=3
+        ),
+        opacity=1,
+    ))
+
 
     fig_0.update_scenes(
         aspectratio_x=1,
@@ -471,7 +506,7 @@ else:
             xaxis = dict(nticks=10, range=[-3.5,3.5],),
             yaxis = dict(nticks=20, range=[0,60],),
             zaxis = dict(nticks=10, range=[0,7],),),
-        height=800,
+        height=700,
         width=1000,
         scene_aspectmode = 'manual',
         legend=dict(
@@ -480,8 +515,8 @@ else:
             x=0.01,
             y=1,
             orientation='h',
-        )
-
+        ),
+        title=None
     )
     
     alpha = (2*pi)*((180+(pf0.iat[len0-n0,s_a_n0]))/360)
@@ -569,7 +604,7 @@ else:
             yaxis_visible=False,
             zaxis_visible=False
         ),
-        showlegend=False    
+        showlegend=False
     )
     index1 = str(pf0.iat[len0-n0,r_s_n0])
     index2 = str(pf0.iat[len0-n0,r_s_r_n0])
@@ -580,6 +615,29 @@ else:
     ok = 1
 
 ###表示
+
+fig_0.update_layout(
+        title=dict(
+            text=('<span style = "display: flex;" ><span style = "font-size: 45px;">Pitch Trajectory</span><br><br><span  style = "color: orange; font-size: 24px; margin-top: 10px;"><a href="https://x.com/empty8128">empty8128 (𝕏/Twitter)</a></span></span>'),
+        ),
+)
+
+st.markdown("""
+    <style>
+        .con0{
+            display: flex;
+            align-items: center;
+            }
+        .con1{
+            font-size: 24px;
+            color: black !impoortant;
+            }
+        .con2{
+            font-size: 12px;
+            color: orange !impoortant;
+            }
+    </style>
+""", unsafe_allow_html=True)
 
 st.plotly_chart(fig_0, key="unique_key_1")
 if active_spin == -1:
