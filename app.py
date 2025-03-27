@@ -577,8 +577,6 @@ else:
     index3_1 = str(pf0.iat[len0-n0,p_n_n0])
     index4_0 = int(pf0.iat[len0-n0,zone_n0])
     index4_1 = bs
-    index5_0 = str(pf0.iat[len0-n0,h_t_n0]) + '\nVS\n' + str(pf0.iat[len0-n0,a_t_n0])
-    index5_1 = '@' + str(pf0.iat[len0-n0,h_t_n0])
     ok = 1
 
 ###表示
@@ -639,6 +637,10 @@ st.markdown("""
             font-size: 15px !important;
             text-align: center;
             color: black;
+        }
+        body {
+            background-color: #FFFFFF !important;
+            color: #000000 !important;
         }
     </style>
 """, unsafe_allow_html=True)
